@@ -1,4 +1,4 @@
-Branch , Strategy
+# Branch  Strategy
 | Branch Type | Naming Pattern | Purpose | Source | Merge Target |
 |------------|----------------|---------|--------|--------------|
 | **Main** | `main` | Production-ready; always deployable; tagged releases originate here | — | — |
