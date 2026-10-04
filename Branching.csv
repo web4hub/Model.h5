@@ -1,0 +1,12 @@
+## Branch Strategy
+
+| Branch Type | Naming Pattern | Purpose | Source | Merge Target |
+|------------|----------------|---------|--------|--------------|
+| **Main** | `main` | Production-ready; always deployable; tagged releases originate here | — | — |
+| **Develop** | `develop` | Integration branch for upcoming versions; collects features | — | — |
+| **Docs** | `docs` | style guides, pdfs, diagrams, assets| — | — |
+| **Build** | `build/*` | Docker, images, databases | — | — |
+| **Feature** | `feature/<name>` | New components, pages, or content modules | `develop` | `develop` (via PR) |
+| **Release** | `release/<version>` | Prepares a new version (polish, docs, version bump) | `develop` | `main` + `develop` |
+| **Hotfix** | `hotfix/<issue>` | Urgent production fixes | `main` | `main` + `develop` |
+| **Tags** | `v1.0.0`, `v1.1.0-beta` | Semantic versioning + pre-releases | — | — |
