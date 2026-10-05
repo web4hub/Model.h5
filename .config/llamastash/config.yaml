@@ -1,0 +1,161 @@
+proxy:
+  idle_ttl_secs: 0 # a loaded model stays until you stop it
+backend:
+  generic:
+    servers:
+      # Server `generic-gufo` on the Flash-Next GGUF row. --reasoning-effort is
+      # the server default; a request's reasoning_effort overrides it.
+      - name: gufo
+        model: Qwen3.8-Flash-Next-UD-Q4_K_XL
+        binary: /ABS/llms/gufo/build/release-rocm10/gufo
+        args:
+          [
+            serve,
+            --host,
+            "{host}",
+            --port,
+            "{port}",
+            --sessions,
+            "1",
+            llm,
+            --served-model-name,
+            "{name}",
+            --model,
+            "{model}",
+            --mtp-model,
+            /ABS/hub/models--unsloth--Qwen3.8-Flash-Next-GGUF/snapshots/38bb39ee97821de2c9009abb7e93950eec396e66/MTP/mtp-Qwen3.8-Flash-Next-shared-Q8_0.gguf,
+            --top-p,
+            "0.95",
+            --top-k,
+            "20",
+            --reasoning-effort,
+            xhigh,
+          ]
+        knobs:
+          - { flag: --context, ctx: true, default: "131072" }
+          - { flag: --speculative, default: mtp }
+          - { flag: --temperature, default: "1.0" }
+          - --seed
+        ready: /ready
+        stop_grace_secs: 60
+        # gufo 404s on any model name but --served-model-name.
+        rewrite_model: true
+      # Server `generic-gufo-27b` on the 27B UD-Q6_K row.
+      - name: gufo-27b
+        model: Qwen3.8-27B-UD-Q6_K
+        binary: /ABS/llms/gufo/build/release-rocm10/gufo
+        args:
+          [
+            serve,
+            --host,
+            "{host}",
+            --port,
+            "{port}",
+            --sessions,
+            "1",
+            llm,
+            --served-model-name,
+            "{name}",
+            --model,
+            "{model}",
+            --speculative,
+            dflash2,
+            --dflash-model,
+            /ABS/hub/models--z-lab--Qwen3.8-27B-DFlash2-GGUF/snapshots/2d9571f8ce46e151f61c6499c99dee6079e1d610/Qwen3.8-27B-DFlash2-Q4_K_M.gguf,
+            --top-p,
+            "0.95",
+            --top-k,
+            "20",
+            --reasoning-effort,
+            xhigh,
+          ]
+        knobs:
+          - { flag: --context, ctx: true, default: "131072" }
+          - { flag: --temperature, default: "1.0" }
+          - --seed
+        ready: /ready
+        stop_grace_secs: 60
+        rewrite_model: true
+      # Own row (weights are not a GGUF). Docker wrapper from step 4.
+      - name: flash-next-halogen
+        binary: ~/.local/bin/halogen-serve
+        args: ["{port}"]
+        arch: qwen4exp
+        params: 177B
+        quant: v2-4.16bpw
+        ctx: 262144
+        # No GGUF to read these from, so the row declares them for `integrations`.
+        # Thinking off plus the template's levels; leave `vision` off: the wrapper
+        # doesn't set HALOGEN_VISION_TOWER, so Halogen refuses images.
+        reasoning_effort: [none, low, medium, xhigh]
+        reasoning_effort_default: xhigh # same as halogen-effort's default
+        # At the 262144 window and pool Halogen holds about 87 GiB. Also gates
+        # admission. A 786432 pool adds ~14.4 GiB this does not count.
+        memory_gib: 87
+        knobs:
+          - {
+              flag: --ctx-window,
+              id: halogen-ctx,
+              ctx: true,
+              default: "131072",
+            }
+          # Positions resident across all sessions, reserved at start (~7.2 GiB
+          # per 262144) out of the lookup table's page cache. Must be >= ctx.
+          - { flag: --halogen-kv-pool, id: halogen-pool, default: "131072" }
+          - { flag: --halogen-temperature, id: halogen-temp, default: "1.0" }
+          - { flag: --halogen-mtp-depth, id: halogen-mtp-depth, default: "3" }
+          # Server default only; a request's reasoning_effort overrides it.
+          - {
+              flag: --halogen-reasoning-effort,
+              id: halogen-effort,
+              default: xhigh,
+            }
+        env:
+          HALOGEN_MODEL_ID: "{name}"
+          HALOGEN_CTX: "{halogen-ctx}"
+          HALOGEN_KV_POOL_POSITIONS: "{halogen-pool}"
+          HALOGEN_TEMPERATURE: "{halogen-temp}"
+          HALOGEN_MTP_DEPTH: "{halogen-mtp-depth}"
+          HALOGEN_REASONING_EFFORT: "{halogen-effort}"
+        ready: /v1/models
+        stop_grace_secs: 90
+        ready_timeout_secs: 600
+presets:
+  # 27B on gufo with the DFlash2 draft, model-card sampling. Give clients a
+  # max_tokens of 16k or more, or long thinking ends in an empty answer.
+  Qwen3.8-27B-UD-Q6_K.gguf:
+    default: 256k
+    entries:
+      128k:
+        server: generic-gufo-27b
+        knobs: { context: 131072, temperature: "1.0" }
+      256k:
+        server: generic-gufo-27b
+        knobs: { context: 262144, temperature: "1.0" }
+  # Flash-Next GGUF on gufo with MTP. Stock llama.cpp can't load the qwen4exp MTP head.
+  Qwen3.8-Flash-Next-*:
+    default: 128k
+    entries:
+      128k:
+        server: generic-gufo
+        knobs: { context: 131072, speculative: mtp, temperature: "1.0" }
+      256k:
+        server: generic-gufo
+        knobs: { context: 262144, speculative: mtp, temperature: "1.0" }
+  # Halogen native v2, MTP depth 3, model-card sampling: the fastest Flash-Next
+  # setup. The pool decides how many sessions stay resident; one that doesn't
+  # fit re-reads its whole prompt every turn.
+  flash-next-halogen:
+    default: solo-256k
+    entries:
+      solo-256k:
+        knobs: { halogen-ctx: 262144, halogen-pool: 262144 }
+      dual-128k:
+        knobs: { halogen-ctx: 131072, halogen-pool: 262144 }
+      triple-128k:
+        knobs: { halogen-ctx: 131072, halogen-pool: 393216 }
+      dual-256k:
+        knobs: { halogen-ctx: 262144, halogen-pool: 524288 }
+      # Three full-length sessions; ~14.4 GiB less page cache than solo-256k.
+      triple-256k:
+        knobs: { halogen-ctx: 262144, halogen-pool: 786432 }
