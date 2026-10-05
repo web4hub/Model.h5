@@ -1,6 +1,6 @@
 from sentence_transformers import CrossEncoder
 
-model = CrossEncoder("Qwen/Qwen3-Reranker-8B")
+model = CrossEncoder("Voodisss/Qwen3-Reranker-4B-GGUF-llama_cpp")
 
 query = "What is the capital of China?"
 documents = [
