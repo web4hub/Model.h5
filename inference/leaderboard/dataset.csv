@@ -1,0 +1,29 @@
+rus-nfcorpus,Bio-Medical IR,test,kaengreg/rus-nfcorpus,kaengreg/rus-nfcorpus-qrels,BEIR translation
+rus-arguana,Argument Retrieval,test,kaengreg/rus-arguana,kaengreg/rus-arguana-qrels,BEIR translation
+rus-scifact,Fact Checking,test,kaengreg/rus-scifact,kaengreg/rus-scifact-qrels,BEIR translation
+rus-scidocs,Citation Prediction,test,kaengreg/rus-scidocs,kaengreg/rus-scidocs-qrels,BEIR translation
+rus-trec-covid,Bio-Medical IR,test,kaengreg/rus-trec-covid,kaengreg/rus-trec-covid-qrels,BEIR translation
+rus-fiqa,Question Answering,dev,kaengreg/rus-fiqa,kaengreg/rus-fiqa-qrels,BEIR translation
+rus-quora,Duplicate Question Retrieval,dev,kaengreg/rus-quora,kaengreg/rus-quora-qrels,BEIR translation
+rus-cqadupstack,Duplicate Question Retrieval,test,kaengreg/rus-cqadupstack,kaengreg/rus-cqadupstack-qrels,BEIR translation
+rus-touche,Argument Retrieval,test,kaengreg/rus-touche,kaengreg/rus-touche-qrels,BEIR translation
+rus-mmarco,Information Retrieval,dev,kaengreg/rus-mmarco-google,kaengreg/rus-mmarco-qrels,Multilingual MS MARCO
+rus-miracl,Information Retrieval,dev,kaengreg/rus-miracl,kaengreg/rus-miracl-qrels,MIRACL
+rus-xquad,Question Answering,dev,kaengreg/rus-xquad,kaengreg/rus-xquad-qrels,XQuAD
+rus-xquad-sentences,Question Answering,dev,kaengreg/rus-xquad-sentences,kaengreg/rus-xquad-sentences-qrels,XQuAD
+rus-tydiqa,Question Answering,dev,kaengreg/rus-tydiqa,kaengreg/rus-tydiqa-qrels,TyDi QA
+sberquad-retrieval,Question Answering,validation,kaengreg/sberquad-retrieval,kaengreg/sberquad-retrieval-qrels,Originally Russian
+ruscibench-retrieval,Scientific IR,dev,kaengreg/ruSciBench-retrieval,kaengreg/ruSciBench-retrieval-qrels,Originally Russian
+ru-facts,Fact Checking,train,kaengreg/ru-facts,kaengreg/ru-facts-qrels,Originally Russian
+rubq,Information Retrieval,test,kaengreg/rubq,kaengreg/rubq-qrels,RU-MTEB
+ria-news,Information Retrieval,test,kaengreg/ria-news,kaengreg/ria-news-qrels,RU-MTEB
+wikifacts-articles,Information Retrieval,dev,kaengreg/wikifacts-articles,kaengreg/wikifacts-articles-qrels,RusBEIR
+wikifacts-para,Fact Checking,dev,kaengreg/wikifacts-para,kaengreg/wikifacts-para-qrels,RusBEIR
+wikifacts-sents,Fact Checking,dev,kaengreg/wikifacts-sents,kaengreg/wikifacts-sents-qrels,RusBEIR
+wikifacts-window_2,Fact Checking,dev,kaengreg/wikifacts-window_2,kaengreg/wikifacts-window_2-qrels,RusBEIR
+wikifacts-window_3,Fact Checking,dev,kaengreg/wikifacts-window_3,kaengreg/wikifacts-window_3-qrels,RusBEIR
+wikifacts-window_4,Fact Checking,dev,kaengreg/wikifacts-window_4,kaengreg/wikifacts-window_4-qrels,RusBEIR
+wikifacts-window_5,Fact Checking,dev,kaengreg/wikifacts-window_5,kaengreg/wikifacts-window_5-qrels,RusBEIR
+wikifacts-window_6,Fact Checking,dev,kaengreg/wikifacts-window_6,kaengreg/wikifacts-window_6-qrels,RusBEIR
+legal_search_2004,Information Retrieval,train,fitkovskaja/legal_search_2004,fitkovskaja/legal_search_2004_qrels,RusBEIR
+legal_search_2007,Information Retrieval,train,fitkovskaja/legal_search_2007,fitkovskaja/legal_search_2007_qrels,RusBEIR
