@@ -1,0 +1,24 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a web world model. I will provide you with an initial page state and a sequence of actions. For each action, predict the resulting page state.\nStrictly maintain the original format. Output only the full page state without explanations, code, or truncation."
+    },
+    {
+      "role": "user",
+      "content": "Initial Page State:\nRootWebArea 'Example Site'\n\t[1] banner ...\n\nFirst Action: 'click([32])'\n\nNext Page State:"
+    },
+    {
+      "role": "assistant",
+      "content": "RootWebArea 'Example Site - News'\n\t[1] banner ...\n\t[50] main ..."
+    },
+    {
+      "role": "user",
+      "content": "Continue the trajectory. Given the previous state, predict the next page state after this action.\n\nAction: 'fill([19], \"weather today\")'\n\nNext Page State:"
+    },
+    {
+      "role": "assistant",
+      "content": "RootWebArea 'Example Site - News'\n\t[1] banner ...\n\t[19] textbox ..., value='weather today' ..."
+    }
+  ]
+}
