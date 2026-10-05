@@ -1,0 +1,34 @@
+{
+  "filename": "Qwen3.8-3.6-27B-blend-IQ4_XS.gguf",
+  "size_bytes": 14252845248,
+  "sha256": "46627cca5e1f09f7489d0b2d774deaa9663f60a27e7edd37a6de8f89b5db0ff8",
+  "evaluated_candidate_sha256": "648adbb3ed0c1f4470387bf74c4d47dd660674cea15cfbbf6c69faf50e081f89",
+  "tensor_payload_sha256": "b252e9265973b2c141d3ee3f31e4c03758beedc6b00501b68ab1ff43eb16d4f0",
+  "tensor_payload_identical_to_evaluated_candidate": true,
+  "tensors": 866,
+  "source_bf16_sha256": "014961883e890959ea44691ef357235703b68140dd43ca3931ed49bf6f63f908",
+  "llama_cpp_revision": "64e9bceb2c3a856efed96feda784a50947049feb",
+  "recipe_source_repo": "unsloth/Qwen3.8-27B-GGUF",
+  "recipe_source_revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+  "recipe_source_file": "Qwen3.8-27B-UD-IQ4_XS.gguf",
+  "tensor_type_file": "IQ4_XS.tensor-types.txt",
+  "tensor_type_file_sha256": "47161434f2b7cfa30f6619194282ad8542a026e7bbda8386ccf892a54e4fc5c3",
+  "calibration": {
+    "tokens": 262144,
+    "chunks": 32,
+    "context_length": 8192,
+    "imatrix_sha256": "ccdd1161f08b6102258ae5563cd10789c03ac3f643dbe9c846d93e460a2c3c71",
+    "parse_special": true,
+    "escape": false,
+    "mtp_enabled": false
+  },
+  "metadata_changes": {
+    "quantize.imatrix.file": "blend-imatrix-262144-tokens.gguf",
+    "quantize.imatrix.dataset": "calibration-262144-tokens.txt"
+  },
+  "validation": {
+    "all_tensor_shapes_and_types_verified": true,
+    "bf16_relative_kl_text_validation": true,
+    "image_and_mtp_functional_tests": false
+  }
+}
